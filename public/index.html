@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>dicom-wasm example</title>
+  </head>
+  <body>
+    <script type="module">
+      import init, {initThreadPool, load_dicom} from "./pkg/dicom_wasm.js";
+
+      await init();
+
+      // Thread pool initialization with the given number of threads
+      // (pass `navigator.hardwareConcurrency` if you want to use all cores).
+      await initThreadPool(1);
+
+      (async () => {
+          const loadFile = async (src) => {
+          const response = await fetch(src);
+          const buffer = await (await response.blob()).arrayBuffer();
+          return new Uint8Array(buffer);
+        }
+        const dicomBlob = await loadFile("SC_ybr_full_uncompressed.dcm")
+
+        console.log("Successfully loaded WASM!");
+        const pixels = load_dicom(dicomBlob.slice(128));
+        console.log('pixels',pixels);
+        const canvas = document.getElementById("dicom");
+        const ctx = canvas.getContext("2d");
+        canvas.width = 100;
+        canvas.height = 100;
+        const pixelData = ctx.createImageData(100, 100);
+        pixelData.data.set(pixels);
+        ctx.putImageData(pixelData, 0, 0);
+      })();
+      </script>
+      <canvas id="dicom"></canvas>
+  </body>
+</html>

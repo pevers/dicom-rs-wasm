@@ -1,0 +1,19 @@
+[package]
+name = "dicom-wasm"
+version = "0.1.0"
+authors = ["Peter Evers <pevers90@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+dicom-object = { path = "../dicom-rs/object", version = "0.4" }
+dicom-pixeldata = { path = "../dicom-rs/pixeldata", version = "0.1" }
+wasm-bindgen = "0.2.74"
+getrandom = { version = "0.2.3", features = ["js"] }
+console_error_panic_hook = "0.1.6"
+wasm-bindgen-rayon = { version = "1.0", features = ["no-bundler"] }
+rayon = "1.5"
