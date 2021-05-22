@@ -4,6 +4,7 @@ Compile dicom-rs for WASM
 ## Run example
 ```
 ./redeploy.sh
+npm install
 node server.js
 ```
 
