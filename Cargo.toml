@@ -10,8 +10,8 @@ edition = "2018"
 crate-type = ["cdylib"]
 
 [dependencies]
-dicom-object = { path = "../dicom-rs/object", version = "0.4" }
-dicom-pixeldata = { path = "../dicom-rs/pixeldata", version = "0.1" }
+dicom-object = { git = "https://github.com/pevers/dicom-rs/", branch = "pevers/gdcm-feature", version = "0.4" }
+dicom-pixeldata = { git = "https://github.com/pevers/dicom-rs/", branch = "pevers/gdcm-feature", version = "0.1", default-features = false }
 wasm-bindgen = "0.2.74"
 getrandom = { version = "0.2.3", features = ["js"] }
 console_error_panic_hook = "0.1.6"

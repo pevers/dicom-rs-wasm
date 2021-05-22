@@ -1,17 +1,14 @@
 use dicom_object::from_reader;
-use wasm_bindgen::prelude::*;
 use dicom_pixeldata::PixelDecoder;
 use std::panic;
+use wasm_bindgen::prelude::*;
 
 pub use wasm_bindgen_rayon::init_thread_pool;
 
 #[wasm_bindgen]
 pub fn load_dicom(dicom: &[u8]) -> Vec<u8> {
-    // Add parameter for canvas
-    // Load the dicom and draw it on the Canvas
-
     panic::set_hook(Box::new(console_error_panic_hook::hook));
-    
+
     let obj = from_reader(dicom).unwrap();
     let image = obj.decode_pixel_data().unwrap();
     let image = image.to_dynamic_image().unwrap();
@@ -20,7 +17,10 @@ pub fn load_dicom(dicom: &[u8]) -> Vec<u8> {
 
 #[cfg(test)]
 mod tests {
-    use std::{fs::File, io::{BufReader, Read}};
+    use std::{
+        fs::File,
+        io::{BufReader, Read},
+    };
 
     use dicom_object::{from_reader, open_file};
 
