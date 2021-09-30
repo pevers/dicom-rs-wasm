@@ -1,9 +1,9 @@
-# dicom-wasm
+# dicom-rs-wasm
 Compile dicom-rs for WASM
 
 ## Run example
 ```
-./redeploy.sh
+./deploy.sh
 npm install
 node server.js
 ```

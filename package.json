@@ -1,6 +1,16 @@
 {
+  "private": true,
+  "scripts": {
+    "build:wasm": "wasm-pack build --target web --release",
+    "build": "npm run build:wasm && webpack build ./index.js --mode production -o dist --output-filename index.js && cp index.html dist/"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "webpack": "^5.25.1",
+    "webpack-cli": "^4.5.0"
+  },
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "comlink": "^4.3.1",
+    "wasm-feature-detect": "^1.2.10"
   }
 }
