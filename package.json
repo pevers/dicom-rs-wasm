@@ -6,6 +6,7 @@
     "run": "node server.js"
   },
   "devDependencies": {
+    "wasm-pack": "0.10.1",
     "cross-env": "^7.0.3",
     "webpack": "^5.25.1",
     "webpack-cli": "^4.5.0"
