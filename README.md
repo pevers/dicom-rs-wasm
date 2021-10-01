@@ -3,9 +3,8 @@ Compile dicom-rs for WASM
 
 ## Run example
 ```
-./deploy.sh
 npm install
-node server.js
+npm run-script build && serve
 ```
 
 ![image](screenshot.png)
