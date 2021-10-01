@@ -2,7 +2,8 @@
   "private": true,
   "scripts": {
     "build:wasm": "wasm-pack build --target web --release",
-    "build": "npm run build:wasm && webpack build ./index.js --mode production -o dist --output-filename index.js && cp index.html dist/ && cp -r data dist/data"
+    "build": "npm run build:wasm && webpack build ./index.js --mode production -o dist --output-filename index.js && cp index.html dist/ && cp -r data dist/data",
+    "run": "node server.js"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
