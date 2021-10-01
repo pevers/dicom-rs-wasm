@@ -1,13 +1,39 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>dicom-rs-wasm example</title>
   </head>
   <body>
-    <input type="file"
-       id="upload" name="dicom">
-    <canvas id="dicom"></canvas>
+    <div style="display: flex; flex-direction: column">
+      <div style="flex: 1">
+        <canvas id="dicom"></canvas>
+      </div>
+      <div style="flex: 1">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="0"
+          id="frameRange"
+          style="visibility: hidden"
+        />
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column">
+      <div>
+        <input type="file" id="upload" name="dicom" />
+      </div>
+      <div class="presets">
+        <p>Presets</p>
+        <p><a href="#" id="SC_rgb_2frame.dcm">SC_rgb_2frame.dcm</a></p>
+        <p>
+          <a href="#" id="SC_rgb_rle_16bit_2frame.dcm"
+            >SC_rgb_rle_16bit_2frame</a
+          >
+        </p>
+      </div>
+    </div>
     <script src="index.js"></script>
   </body>
 </html>
