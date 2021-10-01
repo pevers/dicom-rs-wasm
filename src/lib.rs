@@ -1,39 +1,55 @@
+pub use wasm_bindgen_rayon::init_thread_pool;
+
 use dicom_object::from_reader;
 use dicom_pixeldata::PixelDecoder;
+use rayon::prelude::*;
 use std::panic;
 use wasm_bindgen::prelude::*;
 
-pub use wasm_bindgen_rayon::init_thread_pool;
-
 #[wasm_bindgen]
-pub fn load_dicom(dicom: &[u8]) -> Vec<u8> {
-    panic::set_hook(Box::new(console_error_panic_hook::hook));
+pub struct DicomResult {
+    /// Pixel data in rgba8
+    #[wasm_bindgen(js_name = "pixelArray")]
+    pub pixel_array: *const u8,
 
-    let obj = from_reader(dicom).unwrap();
-    let image = obj.decode_pixel_data().unwrap();
-    let image = image.to_dynamic_image().unwrap();
-    image.to_rgba8().to_vec()
+    //// Size of the pixel data
+    pub size: usize,
+
+    /// Number of columns
+    pub cols: u32,
+
+    /// Number of rows
+    pub rows: u32,
+
+    /// Number of frames
+    pub frames: u16,
 }
 
-#[cfg(test)]
-mod tests {
-    use std::{
-        fs::File,
-        io::{BufReader, Read},
-    };
-
-    use dicom_object::{from_reader, open_file};
-
-    #[test]
-    fn load_dicom_memory() {
-        let mut bytes = BufReader::new(File::open("public/SC_ybr_full_uncompressed.dcm").unwrap());
-        let mut preamble = [0; 128];
-        bytes.read(&mut preamble[..]).unwrap();
-        from_reader(bytes).unwrap();
+#[wasm_bindgen(js_name = "loadDicom")]
+pub fn load_dicom(dicom: &[u8]) -> DicomResult {
+    panic::set_hook(Box::new(console_error_panic_hook::hook));
+    let obj = from_reader(&dicom[128..]).unwrap();
+    let image = obj.decode_pixel_data().unwrap();
+    let pixels = (0..(image.number_of_frames as usize))
+        .into_par_iter()
+        .flat_map(|frame| {
+            image
+                .to_dynamic_image(frame as u16)
+                .unwrap()
+                .to_rgba8()
+                .to_vec()
+        })
+        .collect::<Vec<u8>>();
+    DicomResult {
+        pixel_array: pixels.as_ptr(),
+        size: pixels.len(),
+        cols: image.rows,
+        rows: image.rows,
+        frames: image.number_of_frames,
     }
+}
 
-    #[test]
-    fn load_file() {
-        open_file("public/SC_ybr_full_uncompressed.dcm").unwrap();
-    }
+#[wasm_bindgen(js_name = "wasmMemory")]
+pub fn wasm_memory() -> JsValue {
+    wasm_bindgen::memory()
 }
